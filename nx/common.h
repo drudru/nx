@@ -7,6 +7,8 @@
 #include <sys/mman.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <errno.h>
+#include <string.h>
 
 #define panic abort
 
