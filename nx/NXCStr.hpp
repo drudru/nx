@@ -29,6 +29,11 @@ struct NXCStr
         return (strcmp(_str, rhs._str) == 0);
     }
 
+    bool operator!= (NXCStr & rhs)
+    {
+        return !(*this == rhs);
+    }
+
     bool operator== (NXCStr && rhs)
     {
         if (_str == rhs._str)
@@ -39,6 +44,11 @@ struct NXCStr
 
         return (strcmp(_str, rhs._str) == 0);
     }
+    bool operator!= (NXCStr && rhs)
+    {
+        return !(*this == rhs);
+    }
+
 
     bool operator!()
     {
