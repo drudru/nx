@@ -85,7 +85,7 @@ struct NXUnixPacketSocket
         int fd;
         struct sockaddr_un addr;
 
-        if ( (fd = socket(AF_UNIX, SOCK_SEQPACKET, 0)) == -1)
+        if ( (fd = socket(AF_UNIX, SOCK_SEQPACKET|SOCK_CLOEXEC, 0)) == -1)
             panic(); // "socket creation error"
 
         char * socket_path = path.path();
@@ -127,7 +127,7 @@ struct NXUnixPacketSocket
         int fd;
         struct sockaddr_un addr;
 
-        if ( (fd = socket(AF_UNIX, SOCK_SEQPACKET, 0)) == -1)
+        if ( (fd = socket(AF_UNIX, SOCK_SEQPACKET|SOCK_CLOEXEC, 0)) == -1)
             panic(); // "socket creation error"
 
         char * socket_path = path.path();
