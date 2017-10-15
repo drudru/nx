@@ -23,7 +23,7 @@ public:
             munmap(_p, _size);
     }
 
-    bool map(char * pathname)
+    bool map(const char * pathname)
     {
         int fd = open(pathname, O_RDONLY);
         if (fd < 0)
