@@ -28,8 +28,8 @@ struct NXColor
 
 enum class NXColorChan : uint8_t
 {
-    GREY1,
-    RGB565
+    GREY1  = 1,
+    RGB565 = 2
 }; 
 
 struct NXBitmap
@@ -136,6 +136,12 @@ struct NXCanvas
     void set_pixel(NXPoint pt, NXColor c)
     {
         bitmap.set_pixel(pt, c);
+    }
+
+    // Clears canvas to bg color
+    void clear()
+    {
+        fill_rect(&bitmap.rect, state.bg);
     }
 
     void fill_rect(NXRect * dst_rect, NXColor color) 
