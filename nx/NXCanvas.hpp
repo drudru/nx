@@ -26,7 +26,7 @@ struct NXColor
     }
 };
 
-enum class NXColorChan : uint8_t
+enum NXColorChan : uint8_t
 {
     GREY1  = 1,
     RGB565 = 2
