@@ -32,6 +32,30 @@ typedef int16_t  I16;
 #define S(x) STRINGIZE2(x)
 #define STRINGIZE2(x) #x
 
-#define panic abort
+
+// BREAKPOINTS
+
+#if defined(__i386__) || defined(__x86_64__)
+
+#define panic() __asm__("int $3");
+
+#elif defined(__thumb__)
+
+#define panic() __asm__ ("udf #1");
+// This is equal to 0xde01 used by GDB as breakpoint
+
+#elif defined(__arm__)
+
+#define panic() __asm__ ("udf #0x10");
+// This is equal to 0xe7f001f0 used by GDB as breakpoint
+
+#else
+
+#define panic() abort()
+
+#endif
+
+
+
 #define panic1(M) do { D("\33[31mPANIC\33[39m " __FILE__ ":" S(__LINE__) " - " M) ; abort(); } while(0);
 
