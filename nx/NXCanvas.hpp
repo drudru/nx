@@ -3,19 +3,27 @@
 
 #include "NXGeom.hpp"
 
+// Alpha not really used - but here so future changes are easy
+
 struct NXColor
 {
     uint8_t     r;
     uint8_t     g;
     uint8_t     b;
-    uint8_t     a;
+    uint8_t     a;      // Not full range. a = 0 = invalid
+
+    bool is_valid()
+    {
+        return (a != 0);
+    }
 
     bool is_black()
     {
         return (true
                 && (r == 0)
                 && (g == 0)
-                && (b == 0));
+                && (b == 0)
+                && (a != 0));
     }
 
     void exclusive_or(NXColor c)
@@ -40,9 +48,11 @@ struct NXBitmap
 
     NXColor get_pixel(NXPoint pt)
     {
-        validate_point(pt);
+        NXColor c = { 0, 0, 0, 0 };
+        if (! is_valid_point(pt))
+            return c;
 
-        NXColor c = { 0, 0, 0, 255 };
+        c.a = 255;
 
         if (chans == NXColorChan::GREY1)
         {
@@ -71,7 +81,8 @@ struct NXBitmap
 
     void set_pixel(NXPoint pt, NXColor c)
     {
-        validate_point(pt);
+        if (! is_valid_point(pt))
+            return;
 
         if (chans == NXColorChan::GREY1)
         {
@@ -95,10 +106,9 @@ struct NXBitmap
 
     }
 
-    void validate_point(NXPoint pt)
+    bool is_valid_point(NXPoint pt)
     {
-        if (!rect.is_point_in(pt))
-            panic();
+        return rect.is_point_in(pt);
     }
 };
 

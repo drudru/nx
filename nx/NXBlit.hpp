@@ -28,32 +28,39 @@ blit (
         for (int col = 0; col < src_clip->size.w; col++) 
         {
             NXColor pixel = src->get_pixel(src_pt);
-            if (state->rop == NXCanvasROP::COPY)
+
+            if (pixel.is_valid())
             {
-                if (state->mono_color_txform)
-                    pixel = pixel.is_black() ? state->bg : state->fg;
-                dst->set_pixel(dst_pt, pixel);
-            }
-            else
-            if (state->rop == NXCanvasROP::SPRITE)
-            {
-                if ( ! pixel.is_black() )
+                if (state->rop == NXCanvasROP::COPY)
                 {
                     if (state->mono_color_txform)
-                        dst->set_pixel(dst_pt, state->fg);
-                    else
-                        dst->set_pixel(dst_pt, pixel);
+                        pixel = pixel.is_black() ? state->bg : state->fg;
+                    dst->set_pixel(dst_pt, pixel);
                 }
+                else
+                if (state->rop == NXCanvasROP::SPRITE)
+                {
+                    if ( ! pixel.is_black() )
+                    {
+                        if (state->mono_color_txform)
+                            dst->set_pixel(dst_pt, state->fg);
+                        else
+                            dst->set_pixel(dst_pt, pixel);
+                    }
+                }
+                else
+                if (state->rop == NXCanvasROP::XOR)
+                {
+                    NXColor dst_pixel = dst->get_pixel(dst_pt);
+                    if (dst_pixel.is_valid())
+                    {
+                        pixel.exclusive_or(dst_pixel);
+                        dst->set_pixel(dst_pt, pixel);
+                    }
+                }
+                else
+                    panic();
             }
-            else
-            if (state->rop == NXCanvasROP::XOR)
-            {
-                NXColor dst_pixel = dst->get_pixel(dst_pt);
-                pixel.exclusive_or(dst_pixel);
-                dst->set_pixel(dst_pt, pixel);
-            }
-            else
-                panic();
 
             src_pt.x++;
             dst_pt.x++;
