@@ -46,5 +46,18 @@ struct NXRect
 
         return true;
     }
+
+    NXRect center_in(NXRect outer)
+    {
+        NXRect new_rect = *this;
+        new_rect.origin = outer.origin;
+
+        // Todo - validate size maybe?
+
+        new_rect.origin.x += (outer.size.w - new_rect.size.w) / 2;
+        new_rect.origin.y += (outer.size.h - new_rect.size.h) / 2;
+
+        return new_rect;
+    }
 };
 
