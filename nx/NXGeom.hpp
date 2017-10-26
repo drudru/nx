@@ -59,5 +59,19 @@ struct NXRect
 
         return new_rect;
     }
+
+    // Keeps the rect center
+    NXRect inset(int delta)
+    {
+        NXRect new_rect = *this;
+
+        new_rect.origin.x += delta;
+        new_rect.origin.y += delta;
+
+        new_rect.size.w -= delta * 2;
+        new_rect.size.h -= delta * 2;
+
+        return new_rect;
+    }
 };
 

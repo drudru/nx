@@ -2,6 +2,7 @@
 #pragma once
 
 #include "NXGeom.hpp"
+#include "NXPStr.hpp"
 
 // Alpha not really used - but here so future changes are easy
 
@@ -192,6 +193,26 @@ struct NXCanvas
                          &state);
 
             txt  += 1;
+            dst_rect.origin.x += src_rect.size.w;
+        }
+    }
+
+    void draw_font(NXFontAtlas * font, NXPoint start_pt, NXPStr * txt)
+    {
+        NXRect  dst_rect = { start_pt, { 0, 0 } };
+
+        for (int i = 0; i < txt->_len; i++)
+        {
+            char c = txt->_str[i];
+
+            NXRect src_rect = font->get_glyph_rect(c);
+
+            dst_rect.size = src_rect.size;
+
+            NXBlit::blit(font->atlas, &src_rect,
+                         &bitmap,     &dst_rect,
+                         &state);
+
             dst_rect.origin.x += src_rect.size.w;
         }
     }

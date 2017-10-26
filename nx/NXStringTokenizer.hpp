@@ -9,20 +9,25 @@
 struct NXStringTokenizer : NXProtoIterator<NXPStr>
 {
 private:
-    char  * _start = nullptr;
-    char  * _curr  = nullptr;
-    bool    _done  = true;
+    const char  * _start = nullptr;
+    char        * _curr  = nullptr;
+    bool          _done  = true;
 public:
 
-    NXStringTokenizer(char * start)
+    NXStringTokenizer(const char * start)
     {
 
         if (start == NULL)
             panic();
 
         _start = start;
-        _curr = start;
+        _curr = (char *)start;
         _done = false;
+    }
+
+    bool is_done()
+    {
+        return _done;
     }
 
     NXPStr get_next()
@@ -54,7 +59,7 @@ public:
 
     void rewind()
     {
-        _curr = _start;
+        _curr = (char *)_start;
         _done = false;
     }
 
