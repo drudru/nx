@@ -27,11 +27,13 @@ struct NXColor
                 && (a != 0));
     }
 
-    void exclusive_or(NXColor c)
+    NXColor exclusive_or(NXColor c)
     {
-        r = r ^ c.r;
-        g = g ^ c.g;
-        b = b ^ c.b;
+        NXColor new_clr{0,0,0,255};;
+        new_clr.r = r ^ c.r,
+        new_clr.g = g ^ c.g;
+        new_clr.b = b ^ c.b;
+        return new_clr;
     }
 };
 
@@ -155,9 +157,9 @@ struct NXCanvas
         fill_rect(&bitmap.rect, state.bg);
     }
 
-    void fill_rect(NXRect * dst_rect, NXColor color) 
+    void fill_rect(NXRect * dst_rect, NXColor color, bool xorop = false) 
     {
-        NXBlit::fill_rect(&bitmap, dst_rect, color);
+        NXBlit::fill_rect(&bitmap, dst_rect, color, xorop);
     }
 
     NXRect font_rect_convert(NXFontAtlas * font, NXRect txt_grid)

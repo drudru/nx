@@ -54,8 +54,8 @@ blit (
                     NXColor dst_pixel = dst->get_pixel(dst_pt);
                     if (dst_pixel.is_valid())
                     {
-                        pixel.exclusive_or(dst_pixel);
-                        dst->set_pixel(dst_pt, pixel);
+                        NXColor color = pixel.exclusive_or(dst_pixel);
+                        dst->set_pixel(dst_pt, color);
                     }
                 }
                 else
@@ -78,7 +78,8 @@ static void
 fill_rect (
      NXBitmap * dst_bmp,
      NXRect   * dst_rect,
-     NXColor    color
+     NXColor    color,
+     bool       xorop = false
      ) 
 {
     // Validate rect
@@ -89,7 +90,18 @@ fill_rect (
     {
         for (int col = 0; col < dst_rect->size.w; col++) 
         {
-            dst_bmp->set_pixel(dst_pt, color);
+            if (xorop)
+            {
+                NXColor dst_pixel = dst_bmp->get_pixel(dst_pt);
+                if (dst_pixel.is_valid())
+                {
+                    NXColor pixel = color.exclusive_or(dst_pixel);
+                    dst_bmp->set_pixel(dst_pt, pixel);
+                }
+            }
+            else
+                dst_bmp->set_pixel(dst_pt, color);
+
 
             dst_pt.x++;
         }
